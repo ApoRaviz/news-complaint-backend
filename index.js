@@ -26,6 +26,7 @@ app.get('/api/health', (req, res) => {
 // API Routes (เพิ่มใน routes/ folder ต่อไป)
 app.use('/api/complaints', require('./routes/complaints'));
 app.use('/api/news', require('./routes/news'));
+app.use('/api/residents', require('./routes/residents'));
 
 // Start server
 app.listen(PORT, () => {
