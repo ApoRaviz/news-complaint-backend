@@ -9,3 +9,5 @@ router.get('/', (req, res) => {
     data: []
   });
 });
+
+module.exports = router;
