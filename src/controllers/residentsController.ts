@@ -1,6 +1,13 @@
+// -----------------------------
+// Controller for residents: Handles request, calls service, sends response
+// Controller สำหรับ residents: รับ request, เรียก service, ส่ง response
+// -----------------------------
+
 import { Request, Response, NextFunction } from 'express';
 import { ResidentsService } from '../services/residentsService';
 
+// Get all residents
+// ดึงข้อมูลผู้อยู่อาศัยทั้งหมด
 export const getAllResidents = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     const residents = await ResidentsService.getAll();
@@ -10,6 +17,8 @@ export const getAllResidents = async (req: Request, res: Response, next: NextFun
   }
 };
 
+// Create a new resident
+// สร้างผู้อยู่อาศัยใหม่
 export const createResident = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   const { name, house_number } = req.body;
   if (!name || !house_number) {
@@ -24,6 +33,8 @@ export const createResident = async (req: Request, res: Response, next: NextFunc
   }
 };
 
+// Update resident info
+// อัปเดตข้อมูลผู้อยู่อาศัย
 export const updateResident = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   const { id } = req.params;
   const { name, house_number } = req.body;
@@ -43,6 +54,8 @@ export const updateResident = async (req: Request, res: Response, next: NextFunc
   }
 };
 
+// Delete a resident
+// ลบผู้อยู่อาศัย
 export const deleteResident = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   const { id } = req.params;
   try {
