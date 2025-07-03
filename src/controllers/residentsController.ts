@@ -5,6 +5,7 @@
 
 import { Request, Response, NextFunction } from 'express';
 import { ResidentsService } from '../services/residentsService';
+import axios from 'axios';
 
 // Get all residents
 // ดึงข้อมูลผู้อยู่อาศัยทั้งหมด
@@ -67,5 +68,22 @@ export const deleteResident = async (req: Request, res: Response, next: NextFunc
     res.json({ message: 'Resident deleted', data: resident });
   } catch (err: any) {
     res.status(500).json({ error: 'Database error', details: err.message });
+  }
+};
+
+// Get all residents (fetch from Supabase REST API)
+// ดึงข้อมูลผู้อยู่อาศัยทั้งหมดจาก Supabase REST API (getAll2)
+export const getAllResidents2 = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  try {
+    // ใส่ URL ของ Supabase REST API และ API Key (ถ้าต้องการ)
+    const response = await axios.get('https://wnuvmmfllkpewjmzvkbt.supabase.co/rest/v1/residents', {
+      headers: {
+        'apikey': process.env.SUPABASE_API_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndudXZtbWZsbGtwZXdqbXp2a2J0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTAzMTY1NTYsImV4cCI6MjA2NTg5MjU1Nn0.wJOhDiZJ_cqKh4C3nLPUqAEP5WPZ_hfWchCHMlJAVxM',
+        'Authorization': `Bearer ${process.env.SUPABASE_API_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndudXZtbWZsbGtwZXdqbXp2a2J0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTAzMTY1NTYsImV4cCI6MjA2NTg5MjU1Nn0.wJOhDiZJ_cqKh4C3nLPUqAEP5WPZ_hfWchCHMlJAVxM'}`,
+      }
+    });
+    res.json({ message: 'Get all residents (Supabase REST)', data: response.data });
+  } catch (err: any) {
+    res.status(500).json({ error: 'Supabase REST error', details: err.message });
   }
 };
