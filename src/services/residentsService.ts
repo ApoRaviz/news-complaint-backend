@@ -6,17 +6,26 @@
 import { pool } from '../models/db';
 import { Resident } from '../models/resident';
 
-export class ResidentsService {
+// Interface สำหรับ ResidentsService (Best Practice)
+export interface IResidentsService {
+  getAll(): Promise<Resident[]>;
+  create(data: Omit<Resident, 'id'>): Promise<Resident>;
+  update(id: number, data: Omit<Resident, 'id'>): Promise<Resident | null>;
+  delete(id: number): Promise<Resident | null>;
+}
+
+// Implement interface ใน ResidentsService
+export class ResidentsService implements IResidentsService {
   // Get all residents
   // ดึงข้อมูลผู้อยู่อาศัยทั้งหมด
-  static async getAll(): Promise<Resident[]> {
+   async getAll(): Promise<Resident[]> {
     const result = await pool.query('SELECT * FROM residents');
     return result.rows;
   }
 
   // Create a new resident
   // สร้างผู้อยู่อาศัยใหม่
-  static async create(data: Omit<Resident, 'id'>): Promise<Resident> {
+   async create(data: Omit<Resident, 'id'>): Promise<Resident> {
     const result = await pool.query(
       'INSERT INTO residents (name, house_number) VALUES ($1, $2) RETURNING *',
       [data.name, data.house_number]
@@ -26,7 +35,7 @@ export class ResidentsService {
 
   // Update resident info
   // อัปเดตข้อมูลผู้อยู่อาศัย
-  static async update(id: number, data: Omit<Resident, 'id'>): Promise<Resident | null> {
+   async update(id: number, data: Omit<Resident, 'id'>): Promise<Resident | null> {
     const result = await pool.query(
       'UPDATE residents SET name = $1, house_number = $2 WHERE id = $3 RETURNING *',
       [data.name, data.house_number, id]
@@ -36,7 +45,7 @@ export class ResidentsService {
 
   // Delete a resident
   // ลบผู้อยู่อาศัย
-  static async delete(id: number): Promise<Resident | null> {
+   async delete(id: number): Promise<Resident | null> {
     const result = await pool.query('DELETE FROM residents WHERE id = $1 RETURNING *', [id]);
     return result.rows[0] || null;
   }
