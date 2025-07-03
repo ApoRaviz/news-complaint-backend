@@ -1,6 +1,6 @@
 // -----------------------------
 // Database connection config for PostgreSQL (Supabase)
-// ตั้งค่าการเชื่อมต่อฐานข้อมูล PostgreSQL (Supabase)
+// ตั้งค่าการเชื่อมต่อฐานข้อมูล PostgreSQL (Supabase) 
 // -----------------------------
 
 import { Pool } from 'pg';
